@@ -80,11 +80,11 @@ k=400
 p=0.9
 repetition_penalty = 1.0
 num_return_sequences = 5
-length = 1000
+length = 100
 stop_token = '|EndOfText|'
 prompt_text = "Matrix movie was so incredible cause"
 
-generate_messages(
+gen = generate_messages(
     model,
     tokenizer,
     prompt_text,
@@ -97,4 +97,5 @@ generate_messages(
     repetition_penalty = repetition_penalty
 )
 
+print('EOF', gen)
 
