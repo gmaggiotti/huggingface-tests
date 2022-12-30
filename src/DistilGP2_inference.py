@@ -1,12 +1,14 @@
 from transformers import GPT2LMHeadModel, GPT2Tokenizer
 
-def get_model_tokenizer(weights_dir, device = 'cuda'):
+
+def get_model_tokenizer(weights_dir, device='cuda'):
     print("Loading Model ...")
     model = GPT2LMHeadModel.from_pretrained(weights_dir)
     model.to('cpu')
     print("Model Loaded ...")
     tokenizer = GPT2Tokenizer.from_pretrained(weights_dir)
     return model, tokenizer
+
 
 def generate_messages(
         model,
@@ -15,14 +17,14 @@ def generate_messages(
         stop_token,
         length,
         num_return_sequences,
-        temperature = 0.7,
+        temperature=0.7,
         k=20,
         p=0.9,
-        repetition_penalty = 1.0,
-        device = 'cpu'
+        repetition_penalty=1.0,
+        device='cpu'
 ):
-
     MAX_LENGTH = int(10000)
+
     def adjust_length_to_model(length, max_sequence_length):
         if length < 0 and max_sequence_length > 0:
             length = max_sequence_length
@@ -33,11 +35,8 @@ def generate_messages(
         return length
 
     length = adjust_length_to_model(length=length, max_sequence_length=model.config.max_position_embeddings)
-
     encoded_prompt = tokenizer.encode(prompt_text, add_special_tokens=False, return_tensors="pt")
-
     encoded_prompt = encoded_prompt.to(device)
-
     output_sequences = model.generate(
         input_ids=encoded_prompt,
         max_length=length + len(encoded_prompt[0]),
@@ -55,7 +54,7 @@ def generate_messages(
     generated_sequences = []
 
     for generated_sequence_idx, generated_sequence in enumerate(output_sequences):
-        #print("=== GENERATED SEQUENCE {} ===".format(generated_sequence_idx + 1))
+        # print("=== GENERATED SEQUENCE {} ===".format(generated_sequence_idx + 1))
         generated_sequence = generated_sequence.tolist()
 
         # Decode text
@@ -66,18 +65,19 @@ def generate_messages(
 
         # Add the prompt at the beginning of the sequence. Remove the excess text that was used for pre-processing
         total_sequence = (
-                prompt_text + text[len(tokenizer.decode(encoded_prompt[0], clean_up_tokenization_spaces=True)) :]
+                prompt_text + text[len(tokenizer.decode(encoded_prompt[0], clean_up_tokenization_spaces=True)):]
         )
 
         generated_sequences.append(total_sequence)
     return generated_sequences
 
+
 weights_dir = "output"
-model, tokenizer = get_model_tokenizer(weights_dir, device = 'cpu')
+model, tokenizer = get_model_tokenizer(weights_dir, device='cpu')
 
 temperature = 1.0
-k=400
-p=0.9
+k = 400
+p = 0.9
 repetition_penalty = 1.0
 num_return_sequences = 5
 length = 100
@@ -91,11 +91,10 @@ gen = generate_messages(
     stop_token,
     length,
     num_return_sequences,
-    temperature = temperature,
+    temperature=temperature,
     k=k,
     p=p,
-    repetition_penalty = repetition_penalty
+    repetition_penalty=repetition_penalty
 )
-
-print('EOF', gen)
-
+[print(x + "\n") for x in gen]
+print('EOF')
