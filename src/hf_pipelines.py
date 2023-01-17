@@ -9,11 +9,25 @@ dilemma. To resolve the issue, I demand an exchange of Megatron for the \
 Optimus Prime figure I ordered. Enclosed are copies of my records concerning \
 this purchase. I expect to hear from you soon. Sincerely, Bumblebee."""
 
-
+# Sentiment classification
 classifier = pipeline("text-classification")
 outputs = classifier(text)
 print(outputs)
 
+# Name Entity Recognition
 ner_tagger = pipeline("ner", aggregation_strategy="simple")
 outputs = ner_tagger(text)
-pd.DataFrame(outputs)
+[print(output) for output in outputs]
+
+# Question Answering
+reader = pipeline("question-answering")
+question = "What does the customer want?"
+outputs = reader(question=question, context=text)
+print(outputs)
+
+# Summarization
+summarizer = pipeline("summarization")
+outputs = summarizer(text, max_length=56, clean_up_tokenization_spaces=True)
+print(outputs[0]['summary_text'])
+
+print("EOF")
