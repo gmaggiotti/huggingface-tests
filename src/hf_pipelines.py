@@ -9,25 +9,36 @@ dilemma. To resolve the issue, I demand an exchange of Megatron for the \
 Optimus Prime figure I ordered. Enclosed are copies of my records concerning \
 this purchase. I expect to hear from you soon. Sincerely, Bumblebee."""
 
-# Sentiment classification
-classifier = pipeline("text-classification")
-outputs = classifier(text)
-print(outputs)
+# # Sentiment classification
+# classifier = pipeline("text-classification")
+# outputs = classifier(text)
+# print(outputs)
+#
+# # Name Entity Recognition
+# ner_tagger = pipeline("ner", aggregation_strategy="simple")
+# outputs = ner_tagger(text)
+# [print(output) for output in outputs]
+#
+# # Question Answering
+# reader = pipeline("question-answering")
+# question = "Was the customer happy?"
+# outputs = reader(question=question, context=text)
+# print(outputs)
+#
+# # Summarization
+# summarizer = pipeline("summarization")
+# outputs = summarizer(text, max_length=56, clean_up_tokenization_spaces=True)
+# print(outputs[0]['summary_text'])
 
-# Name Entity Recognition
-ner_tagger = pipeline("ner", aggregation_strategy="simple")
-outputs = ner_tagger(text)
-[print(output) for output in outputs]
+# Translator
 
-# Question Answering
-reader = pipeline("question-answering")
-question = "What does the customer want?"
-outputs = reader(question=question, context=text)
-print(outputs)
+translator = pipeline("translation_en_to_es", model="Helsinki-NLP/opus-mt-en-es")
+outputs = translator(text, clean_up_tokenization_spaces=True, min_length=100)
+print(outputs[0]['translation_text'])
 
-# Summarization
-summarizer = pipeline("summarization")
-outputs = summarizer(text, max_length=56, clean_up_tokenization_spaces=True)
-print(outputs[0]['summary_text'])
+# using big opus spanish model
+translator = pipeline("translation_en_to_es", model="Helsinki-NLP/opus-mt-tc-big-en-es")
+outputs = translator(text, clean_up_tokenization_spaces=True, min_length=100)
+print(outputs[0]['translation_text'])
 
 print("EOF")
