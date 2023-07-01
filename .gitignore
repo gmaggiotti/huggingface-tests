@@ -1,3 +1,4 @@
+*distilbert-base-uncased-finetuned-emotion/
 .idea/
 *.iml
 dataset/*
