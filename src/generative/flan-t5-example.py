@@ -5,7 +5,7 @@ from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 tokenizer = AutoTokenizer.from_pretrained("google/flan-t5-xxl")
 model = AutoModelForSeq2SeqLM.from_pretrained("google/flan-t5-xxl")
 
-input_text = "Q:how was the last president of US?"
+input_text = "Q:who was the last president of US?"
 input_ids = tokenizer(input_text, return_tensors="pt").input_ids
 
 outputs = model.generate(input_ids)
