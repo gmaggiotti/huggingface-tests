@@ -2,8 +2,9 @@
 # https://huggingface.co/google/flan-t5-xxl?text=Q%3A+dumbest+thing+Donnal+Trump+did+in+his+presidency%3F
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 
-tokenizer = AutoTokenizer.from_pretrained("google/flan-t5-xxl")
-model = AutoModelForSeq2SeqLM.from_pretrained("google/flan-t5-xxl")
+model_id = "google/flan-t5-xxl"
+tokenizer = AutoTokenizer.from_pretrained(model_id)
+model = AutoModelForSeq2SeqLM.from_pretrained(model_id)
 
 input_text = "Q:who was the last president of US?"
 input_ids = tokenizer(input_text, return_tensors="pt").input_ids
